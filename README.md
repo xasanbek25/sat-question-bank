@@ -1,1 +1,383 @@
 # sat-question-bank
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAT Math Practice: Algebra (Questions 1–10)</title>
+<style>
+:root{--blue:#1e5fd8;--green:#1b8a4b;--red:#c0392b;--ink:#1d2430;--muted:#5d6675;--line:#d9dee7;--bg:#f4f6fa;}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+header{background:#fff;border-bottom:1px solid var(--line);padding:14px 20px;}
+header h1{font-size:1.15rem;margin:0}
+header p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+main{max-width:1100px;margin:0 auto;padding:20px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+@media(max-width:880px){main{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.qnum{font-size:.85rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.progress{height:6px;background:#e6eaf1;border-radius:4px;overflow:hidden;margin:10px 0 18px}
+.progress div{height:100%;background:var(--blue)}
+.qtext{font-size:1.05rem;line-height:1.65;margin:10px 0}
+.figure{margin:12px 0;text-align:center}
+.figure svg{font-family:system-ui,Arial,sans-serif}
+.figure text{fill:#1d2430}
+.figure line,.figure circle{stroke:#1d2430}
+.figure circle{fill:#1d2430}
+.sys{font-size:1.1rem;line-height:2;margin:10px 0 4px;padding:10px 14px;background:#f7f9fc;border-radius:8px;display:inline-block}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;margin:0 2px;font-size:.95em}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 4px}
+.frac>span:last-child{padding:0 4px}
+.choice{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:10px;cursor:pointer;background:#fff;text-align:left;width:100%;font:inherit;color:inherit}
+.choice:hover{border-color:#9bb8ee}
+.choice .letter{flex:0 0 28px;height:28px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+.choice.sel{border-color:var(--blue);background:#eef4ff}
+.choice.sel .letter{background:var(--blue);border-color:var(--blue);color:#fff}
+.choice.right{border-color:var(--green);background:#e9f7ef}
+.choice.right .letter{background:var(--green);border-color:var(--green);color:#fff}
+.choice.wrong{border-color:var(--red);background:#fdecea}
+.choice.wrong .letter{background:var(--red);border-color:var(--red);color:#fff}
+.choice[disabled]{cursor:default}
+input.ans{font-size:1.1rem;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;width:220px}
+input.ans:focus{outline:2px solid #9bb8ee;border-color:var(--blue)}
+.feedback{margin-top:16px;padding:14px 16px;border-radius:10px;line-height:1.55}
+.feedback.ok{background:#e9f7ef;border:1px solid #a8dcbb}
+.feedback.bad{background:#fdecea;border:1px solid #f1b5ae}
+.feedback.info{background:#f2f6ff;border:1px solid #c7d8fb}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap}
+button.btn{font:inherit;padding:10px 18px;border-radius:8px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);cursor:pointer;font-weight:600}
+button.btn.primary{background:var(--blue);color:#fff}
+button.btn:disabled{opacity:.4;cursor:not-allowed}
+button.link{background:none;border:none;color:var(--blue);font:inherit;cursor:pointer;text-decoration:underline;padding:0}
+.navigator{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.navigator button{width:40px;height:40px;border-radius:8px;border:1.5px solid var(--line);background:#fff;font:inherit;font-weight:600;cursor:pointer}
+.navigator button.done{border-color:#9bb8ee;background:#eef4ff}
+.navigator button.cur{outline:2px solid var(--blue);outline-offset:1px}
+.navigator button.right{background:var(--green);border-color:var(--green);color:#fff}
+.navigator button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+aside details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:16px;overflow:hidden}
+aside summary{padding:14px 16px;font-weight:700;cursor:pointer;background:#fbfcfe}
+aside .inner{padding:12px 16px 16px;font-size:.95rem;line-height:1.6}
+aside iframe{width:100%;height:420px;border:0;border-radius:8px}
+.ref td{padding:6px 4px;vertical-align:middle}
+.ref tr+tr td{border-top:1px solid #eef1f6}
+.score{font-size:3rem;font-weight:800;color:var(--blue);margin:6px 0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tag{padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:700}
+.tag.ok{background:#e9f7ef;color:var(--green)}
+.tag.bad{background:#fdecea;color:var(--red)}
+.tag.none{background:#eef1f6;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>SAT Math Practice: Algebra (Questions 1–10)</h1>
+  <p>Answer each question, move between questions with Next and Previous, then submit to see your score and review.</p>
+</header>
+
+<main>
+  <section class="card" id="app"></section>
+
+  <aside>
+    <details>
+      <summary>SAT reference sheet</summary>
+      <div class="inner">
+        <table class="ref">
+          <tr><td>Circle area</td><td>A = πr<sup>2</sup></td></tr>
+          <tr><td>Circle circumference</td><td>C = 2πr</td></tr>
+          <tr><td>Rectangle area</td><td>A = lw</td></tr>
+          <tr><td>Triangle area</td><td>A = <span class="frac"><span>1</span><span>2</span></span>bh</td></tr>
+          <tr><td>Rectangular prism volume</td><td>V = lwh</td></tr>
+          <tr><td>Cylinder volume</td><td>V = πr<sup>2</sup>h</td></tr>
+          <tr><td>Cone volume</td><td>V = <span class="frac"><span>1</span><span>3</span></span>πr<sup>2</sup>h</td></tr>
+          <tr><td>Sphere volume</td><td>V = <span class="frac"><span>4</span><span>3</span></span>πr<sup>3</sup></td></tr>
+          <tr><td>Pyramid volume</td><td>V = <span class="frac"><span>1</span><span>3</span></span>Bh</td></tr>
+          <tr><td>Pythagorean theorem</td><td>a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></td></tr>
+          <tr><td>45°–45°–90° triangle</td><td>sides x, x, x√2</td></tr>
+          <tr><td>30°–60°–90° triangle</td><td>sides x, x√3, 2x</td></tr>
+          <tr><td>Triangle angle sum</td><td>180°</td></tr>
+          <tr><td>Circle</td><td>360° (2π radians)</td></tr>
+          <tr><td>Slope</td><td>m = <span class="frac"><span>y<sub>2</sub> − y<sub>1</sub></span><span>x<sub>2</sub> − x<sub>1</sub></span></span></td></tr>
+          <tr><td>Slope-intercept form</td><td>y = mx + b</td></tr>
+          <tr><td>Parallel lines</td><td>same slope</td></tr>
+          <tr><td>Perpendicular lines</td><td>slopes are negative reciprocals</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details open>
+      <summary>Desmos graphing calculator</summary>
+      <div class="inner">
+        <iframe src="https://www.desmos.com/calculator" title="Desmos graphing calculator" loading="lazy"></iframe>
+        <p style="margin:8px 0 0"><a href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open Desmos in a new tab</a></p>
+      </div>
+    </details>
+  </aside>
+</main>
+
+<script>
+const F=(n,d)=>`<span class="frac"><span>${n}</span><span>${d}</span></span>`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function fig1(){
+  const X=k=>70+34*k, Y=v=>260-0.2444*v;
+  let s='<svg viewBox="0 0 440 300" width="100%" style="max-width:440px" role="img" aria-label="Graph of total distance y versus minutes x, a line from (0, 150) to (10, 650)">';
+  for(let v=100;v<=900;v+=100) s+=`<line x1="70" y1="${Y(v)}" x2="410" y2="${Y(v)}" stroke="#d9dee7"/><text x="62" y="${Y(v)+4}" text-anchor="end" font-size="11">${v}</text>`;
+  for(let k=1;k<=10;k++) s+=`<line x1="${X(k)}" y1="40" x2="${X(k)}" y2="260" stroke="#d9dee7"/><text x="${X(k)}" y="276" text-anchor="middle" font-size="11">${k}</text>`;
+  s+=`<line x1="70" y1="260" x2="415" y2="260" stroke="#1d2430" stroke-width="1.6"/><line x1="70" y1="30" x2="70" y2="260" stroke="#1d2430" stroke-width="1.6"/>`;
+  s+=`<line x1="${X(0)}" y1="${Y(150)}" x2="${X(10)}" y2="${Y(650)}" stroke="#1d2430" stroke-width="2"/>`;
+  s+=`<circle cx="${X(0)}" cy="${Y(150)}" r="4"/><circle cx="${X(10)}" cy="${Y(650)}" r="4"/>`;
+  s+=`<text x="418" y="264" font-size="13" font-style="italic">x</text><text x="62" y="30" font-size="13" font-style="italic">y</text></svg>`;
+  return s;
+}
+
+function fig7(){
+  const X=x=>160+14*x, Y=y=>160-14*y;
+  let s='<svg viewBox="0 0 320 320" width="100%" style="max-width:320px" role="img" aria-label="Graph of a line through (0, 2) and (8, 0)">';
+  for(let v=-10;v<=10;v++){
+    s+=`<line x1="${X(v)}" y1="20" x2="${X(v)}" y2="300" stroke="#e3e8f0"/>`;
+    s+=`<line x1="20" y1="${Y(v)}" x2="300" y2="${Y(v)}" stroke="#e3e8f0"/>`;
+  }
+  s+=`<line x1="20" y1="160" x2="305" y2="160" stroke="#1d2430" stroke-width="1.6"/><line x1="160" y1="15" x2="160" y2="305" stroke="#1d2430" stroke-width="1.6"/>`;
+  for(let v=-10;v<=10;v+=2){
+    if(v!==0){
+      s+=`<text x="${X(v)}" y="176" text-anchor="middle" font-size="10">${v}</text>`;
+      s+=`<text x="150" y="${Y(v)+4}" text-anchor="end" font-size="10">${v}</text>`;
+    }
+  }
+  s+=`<line x1="${X(-10)}" y1="${Y(4.5)}" x2="${X(10)}" y2="${Y(-0.5)}" stroke="#1d2430" stroke-width="2.2"/>`;
+  s+=`<text x="308" y="164" font-size="13" font-style="italic">x</text><text x="164" y="22" font-size="13" font-style="italic">y</text></svg>`;
+  return s;
+}
+
+const QS=[
+{
+  intro:`While walking on a trail, Mary stopped to read a trail sign. The graph shows the total distance <i>y</i>, in meters, Mary had walked on the trail <i>x</i> minutes after leaving the trail sign.`,
+  fig:fig1,
+  q:`What distance, in meters, did Mary walk on the trail in the 10 minutes after leaving the trail sign?`,
+  type:'num', answer:500, display:'500',
+  explain:`The line goes from (0, 150) to (10, 650). Over the 10 minutes, Mary walked 650 − 150 = 500 meters, a rate of 50 meters per minute.`
+},
+{
+  intro:``,
+  fig:null,
+  q:`A number <i>x</i> is at most 2 less than 3 times the value of <i>y</i>. If the value of <i>y</i> is −4, what is the greatest possible value of <i>x</i>?`,
+  type:'num', answer:-14, display:'−14',
+  explain:`The inequality is x ≤ 3y − 2. With y = −4: x ≤ 3(−4) − 2 = −12 − 2 = −14. The greatest possible value is −14.`
+},
+{
+  intro:`According to data provided by the US Department of Energy, the average price per gallon of regular gasoline in the United States from September 1, 2014, to December 1, 2014, is modeled by the function <i>F</i> defined below, where <i>F</i>(<i>x</i>) is the average price per gallon <i>x</i> months after September 1.`,
+  fig:null,
+  q:`<div class="sys" style="font-size:1.05rem"><i>F</i>(<i>x</i>) = 2.74 − 0.19(<i>x</i> − 3)</div><br>The constant 2.74 in this function estimates which of the following?`,
+  type:'mc',
+  choices:[
+    `The average monthly decrease in the price per gallon`,
+    `The difference in the average price per gallon from September 1, 2014, to December 1, 2014`,
+    `The average price per gallon on September 1, 2014`,
+    `The average price per gallon on December 1, 2014`
+  ],
+  answer:3,
+  explain:`December 1, 2014 is 3 months after September 1, so <i>F</i>(3) = 2.74 − 0.19(0) = 2.74. The constant is the price on December 1, 2014. The −0.19 is the monthly change, not the constant.`
+},
+{
+  intro:``,
+  fig:null,
+  q:`In the <i>xy</i>-plane, line ℓ passes through the point (0, 0) and is parallel to the line represented by the equation <i>y</i> = 8<i>x</i> + 2. If line ℓ also passes through the point (3, <i>d</i>), what is the value of <i>d</i>?`,
+  type:'num', answer:24, display:'24',
+  explain:`Parallel lines have the same slope, so line ℓ has slope 8. Through (0, 0) its equation is y = 8x. At x = 3, d = 8(3) = 24.`
+},
+{
+  intro:``,
+  fig:null,
+  q:`One gallon of stain will cover 170 square feet of a surface. A yard has a total fence area of <i>w</i> square feet. Which equation represents the total amount of stain <i>S</i>, in gallons, needed to stain the fence in this yard twice?`,
+  type:'mc',
+  choices:[
+    `<i>S</i> = ${F('w','170')}`,
+    `<i>S</i> = 170<i>w</i>`,
+    `<i>S</i> = 340<i>w</i>`,
+    `<i>S</i> = ${F('w','85')}`
+  ],
+  answer:3,
+  explain:`Staining twice covers 2w square feet. At 170 square feet per gallon, S = 2w/170 = w/85.`
+},
+{
+  intro:`In the system of equations below, <i>a</i> and <i>c</i> are constants.`,
+  fig:null,
+  q:`<div class="sys">${F(1,2)}<i>x</i> + ${F(1,3)}<i>y</i> = ${F(1,6)}<br><i>ax</i> + <i>y</i> = <i>c</i></div><br>If the system of equations has an infinite number of solutions (<i>x</i>, <i>y</i>), what is the value of <i>a</i>?`,
+  type:'mc',
+  choices:[
+    `−${F(1,2)}`,
+    `0`,
+    `${F(1,2)}`,
+    `${F(3,2)}`
+  ],
+  answer:3,
+  explain:`Multiply the first equation by 6 to get 3x + 2y = 1. For infinitely many solutions, ax + y = c must be a multiple of this equation. Matching the y-coefficients, 1 = (½)(2), so the multiplier is ½. Then a = ½(3) = 3/2.`
+},
+{
+  intro:`The graph of <i>y</i> = <i>f</i>(<i>x</i>) + 14 is shown in the <i>xy</i>-plane.`,
+  fig:fig7,
+  q:`Which equation defines function <i>f</i>?`,
+  type:'mc',
+  choices:[
+    `<i>f</i>(<i>x</i>) = −${F(1,4)}<i>x</i> − 12`,
+    `<i>f</i>(<i>x</i>) = −${F(1,4)}<i>x</i> + 16`,
+    `<i>f</i>(<i>x</i>) = −${F(1,4)}<i>x</i> + 2`,
+    `<i>f</i>(<i>x</i>) = −${F(1,4)}<i>x</i> − 14`
+  ],
+  answer:0,
+  explain:`The graph of y = f(x) + 14 passes through (0, 2) and (8, 0), so its slope is −1/4 and it equals −x/4 + 2. Subtracting 14 gives f(x) = −x/4 − 12.`
+},
+{
+  intro:`Keenan made 32 cups of vegetable broth. Keenan then filled <i>x</i> small jars and <i>y</i> large jars with all the vegetable broth he made. The equation 3<i>x</i> + 5<i>y</i> = 32 represents this situation.`,
+  fig:null,
+  q:`Which is the best interpretation of 5<i>y</i> in this context?`,
+  type:'mc',
+  choices:[
+    `The number of large jars Keenan filled`,
+    `The number of small jars Keenan filled`,
+    `The total number of cups of vegetable broth in the large jars`,
+    `The total number of cups of vegetable broth in the small jars`
+  ],
+  answer:2,
+  explain:`Each small jar holds 3 cups (3x) and each large jar holds 5 cups. So 5y is the total number of cups in the y large jars.`
+},
+{
+  intro:`One of the equations in a system of two linear equations is given: <i>y</i> = 7<i>x</i> + 18. The system has no solution.`,
+  fig:null,
+  q:`Which equation could be the second equation in the system?`,
+  type:'mc',
+  choices:[
+    `−21<i>x</i> + <i>y</i> = 54`,
+    `−21<i>x</i> + <i>y</i> = 18`,
+    `−7<i>x</i> + <i>y</i> = 21`,
+    `−7<i>x</i> + <i>y</i> = 18`
+  ],
+  answer:2,
+  explain:`No solution means parallel, distinct lines: same slope (7) and different y-intercept (not 18). −7x + y = 21 is y = 7x + 21, which fits. Option D is the same line (infinitely many solutions), and A and B have slope 21.`
+},
+{
+  intro:``,
+  fig:null,
+  q:`<div class="sys"><i>y</i> = 4<i>x</i> + 1<br>4<i>y</i> = 15<i>x</i> − 8</div><br>The solution to the given system of equations is (<i>x</i>, <i>y</i>). What is the value of <i>x</i> − <i>y</i>?`,
+  type:'num', answer:35, display:'35',
+  explain:`Substitute y = 4x + 1 into 4y = 15x − 8: 4(4x + 1) = 15x − 8, so 16x + 4 = 15x − 8 and x = −12. Then y = 4(−12) + 1 = −47, and x − y = −12 − (−47) = 35.`
+}
+];
+
+let cur=0, submitted=false, view='quiz';
+let answers=QS.map(()=>null);
+
+function parseNum(s){
+  s=String(s).trim().replace(/−/g,'-').replace(/\s+/g,'');
+  if(s==='') return NaN;
+  const m=s.match(/^(-?\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
+  if(m) return parseFloat(m[1])/parseFloat(m[2]);
+  return /^-?\d*\.?\d+$/.test(s)?parseFloat(s):NaN;
+}
+function isCorrect(i){
+  const q=QS[i], a=answers[i];
+  if(a===null||a==='') return false;
+  if(q.type==='mc') return a===q.answer;
+  const x=parseNum(a);
+  return !isNaN(x) && Math.abs(x-q.answer)<1e-9;
+}
+function answeredQ(i){
+  const a=answers[i];
+  return !(a===null||a===undefined||a==='');
+}
+function userAnswerText(i){
+  const q=QS[i], a=answers[i];
+  if(!answeredQ(i)) return 'No answer';
+  if(q.type==='mc') return String.fromCharCode(65+a)+'. '+q.choices[a];
+  return String(a);
+}
+function correctText(i){
+  const q=QS[i];
+  return q.type==='mc' ? String.fromCharCode(65+q.answer)+'. '+q.choices[q.answer] : q.display;
+}
+
+function go(i){ view='quiz'; cur=i; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+function chooseMC(j){ if(submitted) return; answers[cur]=j; render(); }
+function setNum(v){ answers[cur]=v; const n=document.querySelector('.navigator button[data-i="'+cur+'"]'); if(n) n.classList.toggle('done',answeredQ(cur)); }
+
+function submitTest(){
+  if(submitted){ view='results'; render(); return; }
+  const un=QS.filter((_,i)=>!answeredQ(i)).length;
+  if(un>0 && !confirm(un+' question(s) are still unanswered. Submit anyway?')) return;
+  submitted=true; view='results'; render(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function retake(){
+  answers=QS.map(()=>null); submitted=false; cur=0; view='quiz'; render();
+}
+function reviewQ(i){ view='quiz'; cur=i; render(); }
+
+function render(){
+  const app=document.getElementById('app');
+  if(view==='results'){ app.innerHTML=resultsHTML(); return; }
+  const q=QS[cur];
+  let h=`<div class="topbar"><span class="qnum">Question ${cur+1} of ${QS.length}</span>`;
+  if(submitted) h+=`<button class="link" onclick="submitTest()">Back to results</button>`;
+  h+=`</div><div class="progress"><div style="width:${((cur+1)/QS.length)*100}%"></div></div>`;
+  if(q.intro) h+=`<div class="qtext">${q.intro}</div>`;
+  if(q.fig) h+=`<div class="figure">${q.fig()}</div>`;
+  h+=`<div class="qtext">${q.q}</div>`;
+
+  if(q.type==='mc'){
+    q.choices.forEach((c,j)=>{
+      let cls='choice';
+      if(answers[cur]===j) cls+=' sel';
+      if(submitted){
+        if(j===q.answer) cls+=' right';
+        else if(answers[cur]===j) cls+=' wrong';
+      }
+      h+=`<button class="${cls}" ${submitted?'disabled':''} onclick="chooseMC(${j})"><span class="letter">${String.fromCharCode(65+j)}</span><span>${c}</span></button>`;
+    });
+  } else {
+    const v=answers[cur]===null?'':esc(answers[cur]);
+    h+=`<label style="display:block;margin-top:6px">Your answer: </label><input class="ans" type="text" inputmode="decimal" placeholder="Type a number" value="${v}" ${submitted?'disabled':''} oninput="setNum(this.value)">`;
+  }
+
+  if(submitted){
+    const ok=isCorrect(cur), un=!answeredQ(cur);
+    h+=`<div class="feedback ${ok?'ok':(un?'info':'bad')}"><strong>${ok?'Correct.':(un?'No answer was given.':'Incorrect.')}</strong>`;
+    if(!ok) h+=` The correct answer is ${correctText(cur)}.`;
+    h+=`<br><span style="display:block;margin-top:6px">${q.explain}</span></div>`;
+  }
+
+  h+=`<div class="nav"><button class="btn" ${cur===0?'disabled':''} onclick="go(${cur-1})">Previous</button>`;
+  h+=`<button class="btn" ${cur===QS.length-1?'disabled':''} onclick="go(${cur+1})">Next</button></div>`;
+
+  h+=`<div class="navigator">`;
+  QS.forEach((_,i)=>{
+    let cls='';
+    if(i===cur) cls+=' cur';
+    if(submitted) cls+=isCorrect(i)?' right':' wrong';
+    else if(answeredQ(i)) cls+=' done';
+    h+=`<button data-i="${i}" class="${cls.trim()}" onclick="go(${i})">${i+1}</button>`;
+  });
+  h+=`</div>`;
+  h+=`<div class="nav" style="margin-top:16px"><span style="color:var(--muted);font-size:.9rem;align-self:center">${QS.filter((_,i)=>answeredQ(i)).length} of ${QS.length} answered</span><button class="btn primary" onclick="submitTest()">${submitted?'View results':'Submit test'}</button></div>`;
+  app.innerHTML=h;
+}
+
+function resultsHTML(){
+  const score=QS.filter((_,i)=>isCorrect(i)).length;
+  const pct=Math.round(score/QS.length*100);
+  let h=`<div class="topbar"><span class="qnum">Results</span></div>`;
+  h+=`<div class="score">${score} / ${QS.length}</div><p style="margin:0 0 6px">You answered <strong>${score}</strong> question(s) correctly (${pct}%).</p>`;
+  h+=`<p style="color:var(--muted);margin:0 0 16px">Select Review on any question to see the explanation.</p>`;
+  QS.forEach((_,i)=>{
+    const ok=isCorrect(i);
+    h+=`<div class="row"><div><strong>Question ${i+1}</strong><br><span style="color:var(--muted);font-size:.9rem">Your answer: ${esc(userAnswerText(i))}</span></div>`;
+    h+=`<div style="display:flex;gap:10px;align-items:center"><span class="tag ${ok?'ok':(answeredQ(i)?'bad':'none')}">${ok?'Correct':(answeredQ(i)?'Incorrect':'No answer')}</span><button class="btn" onclick="reviewQ(${i})">Review</button></div></div>`;
+  });
+  h+=`<div class="nav"><button class="btn" onclick="go(0)">Back to questions</button><button class="btn primary" onclick="retake()">Retake test</button></div>`;
+  return h;
+}
+
+render();
+</script>
+</body>
+</html>
