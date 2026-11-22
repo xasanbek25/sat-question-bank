@@ -1,0 +1,479 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta name="allchatbots-layout" content="large">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAT Math Practice: Algebra (10 questions)</title>
+<style>
+:root{--blue:#1e5fd8;--green:#1b8a4b;--red:#c0392b;--ink:#1d2430;--muted:#5d6675;--line:#d9dee7;--bg:#f4f6fa;}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+.app{height:100vh;height:100dvh;display:flex;flex-direction:column}
+header{background:#fff;border-bottom:1px solid var(--line);padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:1.1rem;margin:0}
+header p{margin:2px 0 0;color:var(--muted);font-size:.85rem}
+.who{font-size:.9rem;font-weight:600}
+.wrap{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 380px}
+.quiz{min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.scroll{flex:1;overflow:auto;padding:26px 36px 18px}
+.inner{max-width:900px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.qnum{font-size:.9rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.saved{font-size:.85rem;color:var(--muted)}
+.progress{height:6px;background:#e6eaf1;border-radius:4px;overflow:hidden;margin:10px 0 22px}
+.progress div{height:100%;background:var(--blue);transition:width .2s}
+.qtext{font-size:1.15rem;line-height:1.7;margin:12px 0}
+.sys{font-size:1.2rem;line-height:2.1;margin:14px 0 6px;padding:12px 18px;background:#f7f9fc;border-radius:10px;display:inline-block}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;margin:0 2px;font-size:.95em}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 4px}
+.frac>span:last-child{padding:0 4px}
+.choice{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:10px;cursor:pointer;background:#fff;text-align:left;width:100%;font:inherit;font-size:1.05rem;color:inherit}
+.choice:not([disabled]):hover{border-color:#9bb8ee}
+.choice .letter{flex:0 0 30px;height:30px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+.choice.sel{border-color:var(--blue);background:#eef4ff}
+.choice.sel .letter{background:var(--blue);border-color:var(--blue);color:#fff}
+.choice.right{border-color:var(--green);background:#e9f7ef}
+.choice.right .letter{background:var(--green);border-color:var(--green);color:#fff}
+.choice.wrong{border-color:var(--red);background:#fdecea}
+.choice.wrong .letter{background:var(--red);border-color:var(--red);color:#fff}
+.choice[disabled]{cursor:default}
+.lbl{display:block;font-weight:600;margin-top:8px}
+input.ans{font-size:1.15rem;padding:11px 14px;border:1.5px solid var(--line);border-radius:8px;width:240px;margin-top:6px}
+input.ans:focus{outline:2px solid #9bb8ee;border-color:var(--blue)}
+input.ans[readonly]{background:#f7f9fc}
+input.name{width:min(420px,100%)}
+.feedback{margin-top:18px;padding:14px 16px;border-radius:10px;line-height:1.6}
+.feedback.ok{background:#e9f7ef;border:1px solid #a8dcbb}
+.feedback.bad{background:#fdecea;border:1px solid #f1b5ae}
+.feedback.info{background:#f2f6ff;border:1px solid #c7d8fb}
+.hint{font-size:.92rem;color:var(--muted);margin-top:8px}
+.card{max-width:560px;margin:24px auto 0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px 28px 24px}
+.card.wide{max-width:760px}
+.card h2{margin:0 0 8px;font-size:1.35rem}
+.card p{color:var(--muted);line-height:1.6;margin:0 0 16px}
+.card label{display:block;font-weight:600;margin-bottom:4px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.score{font-size:3rem;font-weight:800;color:var(--blue);margin:6px 0 2px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.meta{color:var(--muted);font-size:.92rem;margin-top:4px}
+.tag{padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:700;margin-left:8px}
+.tag.ok{background:#e9f7ef;color:var(--green)}
+.tag.bad{background:#fdecea;color:var(--red)}
+.tag.none{background:#eef1f6;color:var(--muted)}
+.bottom{border-top:1px solid var(--line);background:#fff;padding:12px 36px;display:flex;flex-direction:column;gap:10px}
+.bottom:empty{display:none}
+.bottom .row1,.bottom .row2{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;max-width:900px;width:100%;margin:0 auto}
+.navigator{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.navigator button{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--line);background:#fff;font:inherit;font-weight:600;cursor:pointer}
+.navigator button.done{border-color:#9bb8ee;background:#eef4ff}
+.navigator button.cur{outline:2px solid var(--blue);outline-offset:1px}
+.navigator button.right{background:var(--green);border-color:var(--green);color:#fff}
+.navigator button.wrong{background:var(--red);border-color:var(--red);color:#fff}
+button.btn{font:inherit;padding:10px 18px;border-radius:8px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);cursor:pointer;font-weight:600}
+button.btn.primary{background:var(--blue);color:#fff}
+button.btn:disabled{opacity:.4;cursor:not-allowed}
+aside{background:#fff;border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+aside details{border-bottom:1px solid var(--line)}
+aside summary{padding:14px 18px;font-weight:700;cursor:pointer;background:#fbfcfe}
+aside .panel{padding:10px 18px 16px;font-size:.95rem;line-height:1.6}
+aside .panel.ref{overflow:auto;max-height:60vh}
+aside iframe{width:100%;height:55vh;min-height:320px;border:0;border-radius:8px}
+.ref td{padding:6px 4px;vertical-align:middle}
+.ref tr+tr td{border-top:1px solid #eef1f6}
+@media(max-width:900px){
+  body{overflow:auto}
+  .app{height:auto;min-height:100vh}
+  .wrap{grid-template-columns:1fr}
+  .quiz{height:auto}
+  .scroll{overflow:visible;padding:20px 18px}
+  .bottom{padding:12px 18px}
+  aside{border-left:0;border-top:1px solid var(--line)}
+  aside iframe{height:360px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div>
+    <h1>SAT Math Practice: Algebra (10 questions)</h1>
+    <p>Enter your name, answer every question, then submit to see your score and review.</p>
+  </div>
+  <div class="who" id="who"></div>
+</header>
+
+<div class="wrap">
+  <section class="quiz">
+    <div class="scroll"><div class="inner" id="app"></div></div>
+    <div class="bottom" id="bottom"></div>
+  </section>
+
+  <aside>
+    <details>
+      <summary>SAT reference sheet</summary>
+      <div class="panel ref">
+        <table class="ref">
+  <tr><td>Circle area</td><td>A = πr<sup>2</sup></td></tr>
+  <tr><td>Circle circumference</td><td>C = 2πr</td></tr>
+  <tr><td>Rectangle area</td><td>A = lw</td></tr>
+  <tr><td>Triangle area</td><td>A = <span class="frac"><span>1</span><span>2</span></span>bh</td></tr>
+  <tr><td>Rectangular prism volume</td><td>V = lwh</td></tr>
+  <tr><td>Cylinder volume</td><td>V = πr<sup>2</sup>h</td></tr>
+  <tr><td>Cone volume</td><td>V = <span class="frac"><span>1</span><span>3</span></span>πr<sup>2</sup>h</td></tr>
+  <tr><td>Sphere volume</td><td>V = <span class="frac"><span>4</span><span>3</span></span>πr<sup>3</sup></td></tr>
+  <tr><td>Pyramid volume</td><td>V = <span class="frac"><span>1</span><span>3</span></span>Bh</td></tr>
+  <tr><td>Pythagorean theorem</td><td>a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></td></tr>
+  <tr><td>45°–45°–90° triangle</td><td>sides x, x, x√2</td></tr>
+  <tr><td>30°–60°–90° triangle</td><td>sides x, x√3, 2x</td></tr>
+  <tr><td>Triangle angle sum</td><td>180°</td></tr>
+  <tr><td>Circle</td><td>360° (2π radians)</td></tr>
+  <tr><td>Slope</td><td>m = <span class="frac"><span>y<sub>2</sub> − y<sub>1</sub></span><span>x<sub>2</sub> − x<sub>1</sub></span></span></td></tr>
+  <tr><td>Slope-intercept form</td><td>y = mx + b</td></tr>
+  <tr><td>Parallel lines</td><td>same slope</td></tr>
+  <tr><td>Perpendicular lines</td><td>slopes are negative reciprocals</td></tr>
+        </table>
+      </div>
+    </details>
+    <details open>
+      <summary>Desmos graphing calculator</summary>
+      <div class="panel">
+        <iframe src="https://www.desmos.com/calculator" title="Desmos graphing calculator" loading="lazy"></iframe>
+        <p style="margin:8px 0 0"><a href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Open Desmos in a new tab</a></p>
+      </div>
+    </details>
+  </aside>
+</div>
+</div>
+
+<script>
+const KEY='sat-algebra-10q-v1';
+const LET=['A','B','C','D'];
+const F=(n,d)=>`<span class="frac"><span>${n}</span><span>${d}</span></span>`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// type 'mc': answer = index of the correct choice (0 = A)
+// type 'num': answer = number, display = how the correct answer is written
+const QS=[
+{
+  type:'mc',
+  sys:['7<i>x</i> + 6<i>y</i> = 5','28<i>x</i> + 24<i>y</i> = 20'],
+  q:'For each real number <i>r</i>, which of the following points lies on the graph of each equation in the <i>xy</i>-plane for the given system?',
+  choices:[
+    `(<i>r</i>, −${F('6<i>r</i>','7')} + ${F('5','7')})`,
+    `(<i>r</i>, ${F('7<i>r</i>','6')} + ${F('5','6')})`,
+    `(${F('<i>r</i>','4')} + 5, −${F('<i>r</i>','4')} + 20)`,
+    `(−${F('6<i>r</i>','7')} + ${F('5','7')}, <i>r</i>)`
+  ],
+  answer:3,
+  explain:`Choice D gives <i>x</i> = −${F('6<i>r</i>','7')} + ${F('5','7')} and <i>y</i> = <i>r</i>. Then 7<i>x</i> + 6<i>y</i> = −6<i>r</i> + 5 + 6<i>r</i> = 5, and the second equation is 4 times the first, so 28<i>x</i> + 24<i>y</i> = 20 also holds for every <i>r</i>. Choice A fails: substituting into 7<i>x</i> + 6<i>y</i> gives ${F('13<i>r</i> + 30','7')}, which equals 5 for only one value of <i>r</i>.`
+},
+{
+  type:'mc',
+  sys:['−12<i>x</i> + 14<i>y</i> = 36','−6<i>x</i> + 7<i>y</i> = −18'],
+  q:'How many solutions does the given system of equations have?',
+  choices:['Exactly one','Exactly two','Infinitely many','Zero'],
+  answer:3,
+  explain:`Divide the first equation by 2 to get −6<i>x</i> + 7<i>y</i> = 18. The second equation says −6<i>x</i> + 7<i>y</i> = −18. The left sides match but the right sides differ, so the lines are parallel and never meet. The system has zero solutions.`
+},
+{
+  type:'num',
+  q:'In August, a car dealer completed 15 more than 3 times the number of sales the car dealer completed in September. In August and September, the car dealer completed 363 sales. How many sales did the car dealer complete in September?',
+  answer:87, display:'87',
+  explain:`Let <i>s</i> be the number of September sales. August sales are 3<i>s</i> + 15. Together: 3<i>s</i> + 15 + <i>s</i> = 363, so 4<i>s</i> = 348 and <i>s</i> = 87. Check: August = 3(87) + 15 = 276, and 276 + 87 = 363.`
+},
+{
+  type:'num',
+  sys:['48<i>x</i> − 64<i>y</i> = 48<i>y</i> + 24','<i>ry</i> = '+F('1','8')+' − 12<i>x</i>'],
+  q:'In the given system of equations, <i>r</i> is a constant. If the system has no solution, what is the value of <i>r</i>?',
+  answer:-28, display:'−28',
+  explain:`Rewrite the first equation as 48<i>x</i> − 112<i>y</i> = 24. Rewrite the second as 12<i>x</i> + <i>ry</i> = ${F('1','8')}, then multiply by 4 to get 48<i>x</i> + 4<i>ry</i> = ${F('1','2')}. The <i>x</i>-coefficients match, so the system has no solution when the <i>y</i>-coefficients also match: 4<i>r</i> = −112, so <i>r</i> = −28. The constants 24 and ${F('1','2')} differ, so the lines are parallel and distinct.`
+},
+{
+  type:'mc',
+  sys:['38(<i>x</i> − <i>n</i>) = 38<i>y</i> + 38<i>n</i>'],
+  q:'One of the equations in a system of two linear equations is given, where <i>n</i> is a positive constant. The system has no solution. Which equation could be the second equation in this system?',
+  choices:['4<i>x</i> − 4<i>y</i> = 8<i>n</i>','4<i>x</i> + 4<i>y</i> = 4<i>n</i>','4<i>x</i> + 4<i>y</i> = 8<i>n</i>','4<i>x</i> − 4<i>y</i> = 4<i>n</i>'],
+  answer:3,
+  explain:`The given equation simplifies to 38<i>x</i> − 38<i>y</i> = 76<i>n</i>, or <i>x</i> − <i>y</i> = 2<i>n</i>. A second equation with the same left side but a different constant gives parallel, distinct lines, so there is no solution. Choice D, 4<i>x</i> − 4<i>y</i> = 4<i>n</i>, is <i>x</i> − <i>y</i> = <i>n</i>. Choice A is the same line, which gives infinitely many solutions. Choices B and C have slope −1, which differs from 1, so each meets the line at exactly one point.`
+},
+{
+  type:'num',
+  q:'A local transit company sells a monthly pass for $95 that allows an unlimited number of trips of any length. Tickets for individual trips cost $1.50, $2.50, or $3.50, depending on the length of the trip. What is the minimum number of trips per month for which a monthly pass could cost less than purchasing individual tickets for trips?',
+  answer:28, display:'28',
+  explain:`The pass can only be cheaper if every trip costs the highest fare, $3.50. So the pass is cheaper when 3.50<i>n</i> > 95, which means <i>n</i> > 27.1. Check: 27 trips at $3.50 cost $94.50, which is less than $95, and 28 trips cost $98, which is more. The minimum is 28.`
+},
+{
+  type:'mc',
+  sys:['<i>y</i> ≤ <i>x</i> + 7','<i>y</i> ≥ −2<i>x</i> − 1'],
+  q:'Which point (<i>x</i>, <i>y</i>) is a solution to the given system of inequalities in the <i>xy</i>-plane?',
+  choices:['(−14, 0)','(0, −14)','(0, 14)','(14, 0)'],
+  answer:3,
+  explain:`Test each point in both inequalities. (−14, 0): 0 ≤ −14 + 7 = −7 is false. (0, −14): −14 ≥ −2(0) − 1 = −1 is false. (0, 14): 14 ≤ 0 + 7 = 7 is false. (14, 0): 0 ≤ 21 and 0 ≥ −29 are both true, so (14, 0) is the solution.`
+},
+{
+  type:'num',
+  sys:['4<i>x</i> − 6<i>y</i> = 10<i>y</i> + 2','<i>ty</i> = '+F('1','2')+' + 2<i>x</i>'],
+  q:'In the given system of equations, <i>t</i> is a constant. If the system has no solution, what is the value of <i>t</i>?',
+  answer:8, display:'8',
+  explain:`Rewrite the first equation as 4<i>x</i> − 16<i>y</i> = 2, or 2<i>x</i> − 8<i>y</i> = 1. Rewrite the second as 2<i>x</i> − <i>ty</i> = −${F('1','2')}. The <i>x</i>-coefficients match, so the system has no solution when the <i>y</i>-coefficients match: −8 = −<i>t</i>, so <i>t</i> = 8. The constants 1 and −${F('1','2')} differ, so the lines are parallel and distinct.`
+},
+{
+  type:'mc',
+  q:'A salesperson’s total earnings consist of a base salary of <i>x</i> dollars per year, plus commission earnings of 11% of the total sales the salesperson makes during the year. This year, the salesperson has a goal for the total earnings to be at least 3 times and at most 4 times the base salary. Which of the following inequalities represents all possible values of total sales <i>s</i>, in dollars, the salesperson can make this year in order to meet that goal?',
+  choices:[
+    '2<i>x</i> ≤ <i>s</i> ≤ 3<i>x</i>',
+    `${F('2','0.11')}<i>x</i> ≤ <i>s</i> ≤ ${F('3','0.11')}<i>x</i>`,
+    '3<i>x</i> ≤ <i>s</i> ≤ 4<i>x</i>',
+    `${F('3','0.11')}<i>x</i> ≤ <i>s</i> ≤ ${F('4','0.11')}<i>x</i>`
+  ],
+  answer:1,
+  explain:`Total earnings are <i>x</i> + 0.11<i>s</i>, and the goal is 3<i>x</i> ≤ <i>x</i> + 0.11<i>s</i> ≤ 4<i>x</i>. Subtract <i>x</i>: 2<i>x</i> ≤ 0.11<i>s</i> ≤ 3<i>x</i>. Divide by 0.11: ${F('2','0.11')}<i>x</i> ≤ <i>s</i> ≤ ${F('3','0.11')}<i>x</i>, which is choice B.`
+},
+{
+  type:'mc',
+  sys:['<i>x</i> + <i>y</i> = 20'],
+  q:'One of the two equations in a system of linear equations is given. The system has exactly one solution. Which equation could be the second equation in the system?',
+  choices:['3<i>x</i> + 3<i>y</i> = 60','−<i>x</i> − <i>y</i> = 40','3<i>x</i> + 3<i>y</i> = 14','<i>x</i> − <i>y</i> = 20'],
+  answer:3,
+  explain:`<i>x</i> + <i>y</i> = 20 has slope −1. A second line with a different slope crosses it at exactly one point. Choice D, <i>x</i> − <i>y</i> = 20, has slope 1, so it works. Choice A is the same line, which gives infinitely many solutions. Choices B and C have slope −1, so they are parallel and give no solution.`
+}
+];
+const N=QS.length;
+
+function fresh(){return {name:'',answers:{},submitted:false,submittedAt:null,cur:0};}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));return s&&typeof s==='object'?Object.assign(fresh(),s):null;}catch(e){return null;}}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+let state=load()||fresh();
+let view='start';
+let rv=0;
+let armed=false;
+
+function parseNum(v){
+  if(v===undefined||v===null) return NaN;
+  const s=String(v).replace(/−/g,'-').replace(/\s+/g,'').replace(/,/g,'');
+  const m=s.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);
+  if(m){const d=Number(m[2]); return d===0?NaN:Number(m[1])/d;}
+  if(/^-?(\d+\.?\d*|\.\d+)$/.test(s)) return Number(s);
+  return NaN;
+}
+function hasAnswer(i){
+  const a=state.answers[i];
+  return QS[i].type==='mc'?Number.isInteger(a):(typeof a==='string'&&a.trim()!=='');
+}
+function isCorrect(i){
+  if(!hasAnswer(i)) return false;
+  const q=QS[i], a=state.answers[i];
+  return q.type==='mc'?a===q.answer:Math.abs(parseNum(a)-q.answer)<1e-9;
+}
+function answeredCount(){let c=0;for(let i=0;i<N;i++) if(hasAnswer(i)) c++;return c;}
+function correctCount(){let c=0;for(let i=0;i<N;i++) if(isCorrect(i)) c++;return c;}
+function missing(){const m=[];for(let i=0;i<N;i++) if(!hasAnswer(i)) m.push(i+1);return m;}
+function mistakes(){const m=[];for(let i=0;i<N;i++) if(!isCorrect(i)) m.push(i);return m;}
+function shown(i){
+  const q=QS[i], a=state.answers[i];
+  if(!hasAnswer(i)) return 'No answer';
+  return q.type==='mc'?`${LET[a]}. ${q.choices[a]}`:esc(a);
+}
+function correctShown(i){
+  const q=QS[i];
+  return q.type==='mc'?`${LET[q.answer]}. ${q.choices[q.answer]}`:q.display;
+}
+
+function qHTML(i){
+  const q=QS[i];
+  let h='';
+  if(q.intro) h+=`<p class="qtext">${q.intro}</p>`;
+  if(q.sys) h+=`<div class="sys">${q.sys.join('<br>')}</div>`;
+  h+=`<p class="qtext">${q.q}</p>`;
+  return h;
+}
+
+function answerHTML(i,review){
+  const q=QS[i], a=state.answers[i];
+  if(q.type==='mc'){
+    return q.choices.map((c,k)=>{
+      let cls='choice';
+      if(!review){ if(a===k) cls+=' sel'; }
+      else { if(k===q.answer) cls+=' right'; else if(a===k) cls+=' wrong'; }
+      return `<button class="${cls}" data-act="choose" data-c="${k}" ${review?'disabled':''}><span class="letter">${LET[k]}</span><span>${c}</span></button>`;
+    }).join('');
+  }
+  const v=typeof a==='string'?a:'';
+  return `<label class="lbl" for="ansIn">Your answer</label>
+  <input id="ansIn" class="ans" type="text" inputmode="decimal" autocomplete="off" placeholder="Type a number" value="${esc(v)}" ${review?'readonly':''}>
+  ${review?'':'<div class="hint">Enter a number, decimal or fraction. Use a minus sign for negative answers.</div>'}`;
+}
+
+function startHTML(){
+  const has=!!state.name;
+  const head=has?`Welcome back, ${esc(state.name)}`:'Enter your name to begin';
+  const body=has
+    ?`<p>${answeredCount()} of ${N} questions answered${state.submitted?', submitted':''}. Your answers are saved in this browser.</p>`
+    :`<p>Your answers save automatically in this browser. You can leave and come back later to finish the test or review your mistakes.</p>`;
+  const btn=has?(state.submitted?'View my results':'Continue test'):'Start test';
+  return `<div class="card">
+    <h2>${head}</h2>${body}
+    <form id="startForm">
+      <label for="nameIn">Your name</label>
+      <input id="nameIn" class="ans name" type="text" maxlength="60" autocomplete="name" placeholder="Type your full name" value="${esc(state.name)}" ${has?'readonly':'required'}>
+      <div class="btnrow">
+        <button class="btn primary" type="submit">${btn}</button>
+        ${has?'<button class="btn" type="button" data-act="reset">Start over</button>':''}
+      </div>
+    </form>
+  </div>`;
+}
+
+function testHTML(){
+  const i=state.cur, a=answeredCount();
+  return `<div class="topbar"><div class="qnum">Question ${i+1} of ${N}</div><div class="saved">Saved automatically · <span id="ansCount">${a}</span> of ${N} answered</div></div>
+  <div class="progress"><div id="bar" style="width:${a/N*100}%"></div></div>
+  ${qHTML(i)}
+  <div id="answerArea">${answerHTML(i,false)}</div>`;
+}
+
+function reviewHTML(){
+  const i=rv, q=QS[i], ok=isCorrect(i), has=hasAnswer(i);
+  return `<div class="topbar"><div class="qnum">Review · Question ${i+1} of ${N}</div><span class="tag ${ok?'ok':'bad'}" style="margin-left:0">${ok?'Correct':(has?'Incorrect':'No answer')}</span></div>
+  <div class="progress"><div style="width:100%;background:${ok?'var(--green)':'var(--red)'}"></div></div>
+  ${qHTML(i)}
+  <div>${answerHTML(i,true)}</div>
+  <div class="feedback ${ok?'ok':'bad'}"><strong>Your answer:</strong> ${shown(i)}<br><strong>Correct answer:</strong> ${correctShown(i)}</div>
+  <div class="feedback info"><strong>Explanation</strong><br>${q.explain}</div>`;
+}
+
+function resultsHTML(){
+  const c=correctCount(), wrongList=mistakes(), pct=Math.round(c/N*100);
+  const when=state.submittedAt?new Date(state.submittedAt).toLocaleString():'';
+  const rows=QS.map((q,i)=>{
+    const ok=isCorrect(i), has=hasAnswer(i);
+    const tag=ok?'<span class="tag ok">Correct</span>':(has?'<span class="tag bad">Incorrect</span>':'<span class="tag none">No answer</span>');
+    return `<div class="row"><div><strong>Question ${i+1}</strong>${tag}<div class="meta">Your answer: ${shown(i)} · Correct: ${correctShown(i)}</div></div><button class="btn" data-act="review" data-i="${i}">Review</button></div>`;
+  }).join('');
+  const firstWrong=wrongList[0];
+  const mistakeBtn=firstWrong!==undefined
+    ?`<button class="btn primary" data-act="review" data-i="${firstWrong}">Review mistakes (${wrongList.length})</button>`
+    :'<span class="hint">No mistakes.</span>';
+  return `<div class="card wide">
+    <h2>Results for ${esc(state.name)}</h2>
+    <div class="score">${c} / ${N}</div>
+    <p>${pct}% correct${when?' · Submitted '+esc(when):''}. Your answers stay saved in this browser, so you can come back and review them.</p>
+    <div class="btnrow">
+      ${mistakeBtn}
+      <button class="btn" data-act="review" data-i="0">Review all questions</button>
+      <button class="btn" data-act="start-screen">Back to start</button>
+    </div>
+    <div style="margin-top:20px">${rows}</div>
+  </div>`;
+}
+
+function barHTML(){
+  const cur=view==='test'?state.cur:rv;
+  const nav=QS.map((q,i)=>{
+    let c=i===cur?'cur':'';
+    if(view==='test'){ if(hasAnswer(i)) c+=' done'; }
+    else { c+=isCorrect(i)?' right':' wrong'; }
+    return `<button class="${c.trim()}" data-act="goto" data-i="${i}" aria-label="Question ${i+1}">${i+1}</button>`;
+  }).join('');
+  const row1=`<div class="row1"><button class="btn" data-act="prev" ${cur===0?'disabled':''}>Previous</button><div class="navigator">${nav}</div><button class="btn" data-act="next" ${cur===N-1?'disabled':''}>Next</button></div>`;
+  let row2='';
+  if(view==='test'){
+    const m=missing();
+    const status=m.length?`Not answered: ${m.join(', ')}. Answer every question to submit.`:'All questions are answered. You can submit now.';
+    row2=`<div class="row2"><span class="hint">${status}</span><button class="btn primary" data-act="submit" ${m.length?'disabled':''}>Submit test</button></div>`;
+  } else {
+    const w=mistakes();
+    const hasNext=w.some(j=>j>rv)||w.length>0;
+    row2=`<div class="row2"><button class="btn" data-act="results">Back to results</button><button class="btn" data-act="nextwrong" ${hasNext?'':'disabled'}>Next mistake</button></div>`;
+  }
+  return row1+row2;
+}
+
+function render(){
+  const app=document.getElementById('app'), bottom=document.getElementById('bottom');
+  const who=document.getElementById('who');
+  who.textContent=(state.name&&view!=='start')?'Student: '+state.name:'';
+  if(view==='start'){ app.innerHTML=startHTML(); bottom.innerHTML=''; }
+  else if(view==='test'){ app.innerHTML=testHTML(); bottom.innerHTML=barHTML(); }
+  else if(view==='review'){ app.innerHTML=reviewHTML(); bottom.innerHTML=barHTML(); }
+  else { app.innerHTML=resultsHTML(); bottom.innerHTML=''; }
+  const sc=document.querySelector('.scroll'); if(sc) sc.scrollTop=0;
+}
+
+function updateChrome(){
+  const a=answeredCount();
+  const c=document.getElementById('ansCount'); if(c) c.textContent=a;
+  const b=document.getElementById('bar'); if(b) b.style.width=(a/N*100)+'%';
+  document.getElementById('bottom').innerHTML=barHTML();
+}
+
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');
+  if(!el||el.disabled) return;
+  const act=el.dataset.act;
+  if(act==='choose'){
+    if(view!=='test') return;
+    state.answers[state.cur]=Number(el.dataset.c);
+    persist(); render();
+  }
+  else if(act==='goto'){
+    const i=Number(el.dataset.i);
+    if(view==='test'){ state.cur=i; persist(); } else { rv=i; }
+    render();
+  }
+  else if(act==='prev'||act==='next'){
+    const d=act==='next'?1:-1;
+    if(view==='test'){ state.cur=Math.min(N-1,Math.max(0,state.cur+d)); persist(); }
+    else { rv=Math.min(N-1,Math.max(0,rv+d)); }
+    render();
+  }
+  else if(act==='submit'){
+    if(missing().length) return;
+    state.submitted=true; state.submittedAt=new Date().toISOString();
+    persist(); view='results'; render();
+  }
+  else if(act==='review'){
+    rv=Number(el.dataset.i); view='review'; render();
+  }
+  else if(act==='results'){
+    view='results'; render();
+  }
+  else if(act==='nextwrong'){
+    const w=mistakes();
+    const nxt=w.find(j=>j>rv);
+    const target=nxt!==undefined?nxt:w[0];
+    if(target!==undefined){ rv=target; render(); }
+  }
+  else if(act==='start-screen'){
+    view='start'; render();
+  }
+  else if(act==='reset'){
+    if(!armed){ armed=true; el.textContent='Click again to erase my answers'; return; }
+    state=fresh(); persist(); armed=false; view='start'; render();
+  }
+});
+
+document.addEventListener('input',e=>{
+  if(e.target.id!=='ansIn'||view!=='test') return;
+  state.answers[state.cur]=e.target.value;
+  persist(); updateChrome();
+});
+
+document.addEventListener('submit',e=>{
+  if(e.target.id!=='startForm') return;
+  e.preventDefault();
+  if(!state.name){
+    const v=document.getElementById('nameIn').value.trim();
+    if(!v) return;
+    state.name=v; persist();
+  }
+  view=state.submitted?'results':'test';
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
